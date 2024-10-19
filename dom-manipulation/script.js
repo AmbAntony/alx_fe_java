@@ -1,13 +1,13 @@
 //an array of quote objects 
 const quotes = [
 
-    {text: 'Life doesnt get easier or more forgiving; we get stronger and more resilient.', Category: 'Life'},
-    {text: 'We will either find a way, or make one.', Category: 'Growth'},
-    {text: 'She stood in the storm and when the wind did not blow her way, she adjusted her sails.', Category: 'Resilience'},
-    {text: '"Do not judge me by my success, judge me by how many times I fell down and got back up again', Category: 'Character'},
-    {text: 'This is no time for ease and comfort. It is time to dare and endure', Category: 'Belief'},
-    {text: 'Courage is not the absence of fear, but rather the judgment that something else is more important than fear.', Category: 'Life'},
-    {text: 'Only those who dare to fail greatly, can ever achieve greatly.', Category: 'Resilience'},
+    {text: 'Life doesnt get easier or more forgiving; we get stronger and more resilient.', category: 'Life'},
+    {text: 'We will either find a way, or make one.', category: 'Growth'},
+    {text: 'She stood in the storm and when the wind did not blow her way, she adjusted her sails.', category: 'Resilience'},
+    {text: '"Do not judge me by my success, judge me by how many times I fell down and got back up again', category: 'Character'},
+    {text: 'This is no time for ease and comfort. It is time to dare and endure', category: 'Belief'},
+    {text: 'Courage is not the absence of fear, but rather the judgment that something else is more important than fear.', category: 'Life'},
+    {text: 'Only those who dare to fail greatly, can ever achieve greatly.', category: 'Resilience'},
 
 ]; 
 
@@ -18,7 +18,7 @@ function showRandomQuote(){
     const randomQuote = quotes[randomIndex];
 
     const quoteDisplay = document.getElementById('quoteDisplay');
-    quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><p><b>Category: ${randomQuote.Category}</b></p>`;
+    quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><p><b>Category: ${randomQuote.category}</b></p>`;
 }
 
 //function  to create a form for adding new quotes
