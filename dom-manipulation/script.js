@@ -116,8 +116,10 @@ function importFromJsonFile(event){
         catch (error){
             alert('failed to import quotes.');
         }
-    }
-};
+    };
+
+    fileReader.readAsText(event.target.files[0]);   
+}
 
 
 //listener to show a random quote when button is clicked
