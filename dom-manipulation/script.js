@@ -17,6 +17,60 @@ function saveQuotes(){
     localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
+// Simulate server API base URL
+const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+
+// Fetch quotes from the server
+async function fetchQuotesFromServer() {
+    try {
+        const response = await fetch(apiUrl);
+        const serverQuotes = await response.json();
+        
+        // Process and integrate fetched quotes
+        handleServerQuotes(serverQuotes);
+    } catch (error) {
+        console.error("Error fetching server data:", error);
+    }
+}
+
+// Handle quotes received from server and resolve conflicts
+function handleServerQuotes(serverQuotes) {
+    const conflicts = [];
+    
+    serverQuotes.forEach(serverQuote => {
+        const localQuote = quotes.find(q => q.text === serverQuote.text);
+
+        if (!localQuote) {
+            // New quote from the server, add it locally
+            quotes.push(serverQuote);
+        } else if (localQuote.category !== serverQuote.category) {
+            // Conflict detected, server category takes precedence
+            conflicts.push({ local: localQuote, server: serverQuote });
+            localQuote.category = serverQuote.category;
+        }
+    });
+
+
+    // Update local storage
+    saveQuotes();
+    
+    // Notify the user if conflicts were resolved
+    if (conflicts.length > 0) {
+        notifyUser(conflicts);
+    }
+}
+
+// Function to display conflicts resolved notification
+function notifyUser(conflicts) {
+    alert(`Conflicts resolved for ${conflicts.length} quotes. Server data took precedence.`);
+}
+
+// Function to sync data periodically
+function startDataSync() {
+    setInterval(fetchQuotesFromServer, 10000); // Sync every 10 seconds
+}
+
+
 //function to display a random quote called showRandomQuote
 
 function showRandomQuote(){
@@ -161,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLastViewedQuote();
     createAddQuoteForm();
     showRandomQuote();
+    startDataSync();
 
 //listener to show a random quote when button is clicked
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
