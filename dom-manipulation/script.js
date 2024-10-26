@@ -20,8 +20,9 @@ function saveQuotes(){
 //function to display a random quote called showRandomQuote
 
 function showRandomQuote(){
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    const randomQuote = quotes[randomIndex];
+    const filteredQuotes = getFilteredQuotes();
+    const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
+    const randomQuote = filteredQuotes[randomIndex];
 
     const quoteDisplay = document.getElementById('quoteDisplay');
     quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><p><b>Category: ${randomQuote.category}</b></p>`;
@@ -41,6 +42,36 @@ function loadLastViewedQuote(){
     else{
         showRandomQuote();
     }
+}
+
+//function to populate categories
+
+function populateCategories(){
+    const categorySet = new Set(quotes.map(quote => quote.category));
+    const categoryFilter = document.getElementById('categoryFilter');
+
+    categoryFilter.innerHTML = `<option value="all">All Categories</options>`;
+
+    categorySet.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+}
+
+//function to filter quotes based on the selected category
+
+function filterQuotes(){
+    const selectedCategory = document.getElementById('categoryFilter');
+    localStorage.setItem('selectedCategory', selectedCategory); //savas the selected category to local storage
+    showRandomQuote();
+}
+
+//function to show the filtered quotes as per the selected category
+function getFilteredQuotes(){
+    const selectedCategory = document.getElementById('categoryFilter').value;
+    return selectedCategory === 'all' ? quotes : quotes.filter(quote => quote.category === selectedCategory)
 }
 
 //function  to create a form for adding new quotes
@@ -71,8 +102,10 @@ function createAddQuoteForm() {
 
             saveQuotes() //saves the updated quotes array in local storage. Calling a function inside another function
 
-            form.reset();
+            event.target.reset();
 
+            populateCategories();
+            filterQuotes();
             alert('Quotes imported successfully!')
 
         } else{
@@ -122,6 +155,13 @@ function importFromJsonFile(event){
 }
 
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    populateCategories();
+    loadLastViewedQuote();
+    createAddQuoteForm();
+    showRandomQuote();
+
 //listener to show a random quote when button is clicked
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
 
@@ -130,8 +170,4 @@ document.getElementById('exportQuotes').addEventListener('click', exportQuotesas
 
 //listener to import quotes from a file
 document.getElementById('importFile').addEventListener('change', importFromJsonFile);
-
-document.addEventListener('DOMContentLoaded', () => {
-    loadLastViewedQuote();
-    createAddQuoteForm();
 }); 
