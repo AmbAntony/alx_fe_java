@@ -60,6 +60,8 @@ function handleServerQuotes(serverQuotes) {
 
     // Update local storage
     saveQuotes();
+
+    alert('Quotes synced with server!');
     
     // Notify the user if conflicts were resolved
     if (conflicts.length > 0) {
