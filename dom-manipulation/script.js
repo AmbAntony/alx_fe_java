@@ -30,7 +30,7 @@ async function fetchQuotesFromServer(newQuote) {
             },
             body: JSON.stringify(newQuote)
         });
-        
+
         const serverQuotes = await response.json();
         
         // Process and integrate fetched quotes
@@ -73,7 +73,7 @@ function notifyUser(conflicts) {
 }
 
 // Function to sync data periodically
-function startDataSync() {
+function syncQuotes() {
     setInterval(fetchQuotesFromServer, 10000); // Sync every 10 seconds
 }
 
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLastViewedQuote();
     createAddQuoteForm();
     showRandomQuote();
-    startDataSync();
+    syncQuotes();
 
 //listener to show a random quote when button is clicked
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
