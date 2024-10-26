@@ -21,9 +21,16 @@ function saveQuotes(){
 const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
 // Fetch quotes from the server
-async function fetchQuotesFromServer() {
+async function fetchQuotesFromServer(newQuote) {
     try {
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newQuote)
+        });
+        
         const serverQuotes = await response.json();
         
         // Process and integrate fetched quotes
